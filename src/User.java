@@ -34,41 +34,57 @@ public class User {
                 '}';
     }
 
-    public void updateRank() {
-        while (progress >= 100) {
-            int newRank = this.rank + 1;
-            if (rank == -1) {
-                newRank = 1;
-            } else if (rank == 8) {
-                return;
-            }
-            setRank(newRank);
-            setProgress(progress - 100);
-        }
-    }
-
-    public void incProgress(int activityRank) {
-        if (activityRank < -8 || activityRank == 0 || activityRank > 8) {
+    public void incProgress(int activityRank)
+    {
+        if (activityRank < -8 || activityRank == 0 || activityRank > 8)
+        {
             throw new IllegalArgumentException("The rank of an activity cannot be less than 8, 0, or greater than 8!");
         }
-        if (activityRank == getRank()) {
-            setProgress(progress + 3);
-        } else if (getRank() > activityRank && getRank() - activityRank == 1) {
-            setProgress(progress + 1);
-        } else if (getRank() > activityRank && getRank() - activityRank >= 2) {
+        if (activityRank == rank)
+        {
+            progress = progress + 3;
+        }
+        else if (rank > activityRank && rank - activityRank == 1)
+        {
+            progress = progress + 1;
+        }
+        else if (rank == 1 && activityRank == -1)
+        {
+            progress = progress + 1;
+        }
+        else if (rank > activityRank && rank - activityRank >= 2)
+        {
             return;
-        } else if (activityRank > getRank()) {
+        }
+        else if (activityRank > rank)
+        {
             int d;
-            if (activityRank >= 0 && getRank() < 0) {
-                d = (activityRank - getRank()) - 1;
-            } else {
-                d = activityRank - getRank();
+            if (activityRank >= 0 && rank < 0)
+            {
+                d = (activityRank - rank) - 1;
+            }
+            else
+            {
+                d = activityRank - rank;
             }
 
-            int progress = 10 * d * d;
-            setProgress(progress);
+            progress = progress + (10 * d * d);
         }
-        updateRank();
+
+        while (progress >= 100)
+        {
+            int newRank = rank + 1;
+            if (rank == -1)
+            {
+                newRank = 1;
+            }
+            else if (rank == 8)
+            {
+                return;
+            }
+            rank = newRank;
+            progress = progress - 100;
+        }
 
 
     }
